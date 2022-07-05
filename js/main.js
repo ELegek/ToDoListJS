@@ -4,8 +4,17 @@
 const form = document.querySelector('#form');
 const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
+const emptyList = document.querySelector('#emptyList');
 
-form.addEventListener('submit', function (event) {
+// Добавление задачи
+form.addEventListener('submit', addTask);
+
+// Удаление задачи
+tasksList.addEventListener('click', deleteTask);
+
+// Функции
+
+function addTask(event) {
 	// Отменяем отправку формы
 	event.preventDefault();
 
@@ -28,4 +37,22 @@ form.addEventListener('submit', function (event) {
 
 	// Добавляем задачу на страницу
 	tasksList.insertAdjacentHTML('beforeend', taskHTML);
-});
+
+	// Очищаем поле ввода и возвращаем на него фокус
+	taskInput.value = '';
+	taskInput.focus();
+
+	// Проверка. Если в списке задач более 1-го элемента, скрываем блог
+
+	if (tasksList.children.length > 1) {
+		emptyList.classList.add('none');
+	}
+}
+
+function deleteTask(event) {
+	// Проверяем что клик был по кнопке "удалить задачу"
+	if (event.target.dataset.action == 'delete') {
+		const parenNode = event.target.closest('.list-group-item');
+		console.log(parenNode);
+	}
+}
