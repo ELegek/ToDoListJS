@@ -15,6 +15,9 @@ tasksList.addEventListener('click', deleteTask);
 // Отмечаем задачу завершенной
 tasksList.addEventListener('click', doneTask);
 
+if (localStorage.getItem('tasksHTML')) {
+	tasksList.innerHTML = localStorage.getItem('tasksHTML');
+}
 // Функции
 
 function addTask(event) {
@@ -50,27 +53,42 @@ function addTask(event) {
 	if (tasksList.children.length > 1) {
 		emptyList.classList.add('none');
 	}
+
+	saveHTMLtoLS();
 }
 
 function deleteTask(event) {
-	// Проверяем что клик был по кнопке "удалить задачу"
-	if (event.target.dataset.action == 'delete') {
-		const parentNode = event.target.closest('.list-group-item');
-		parentNode.remove();
+	// Проверяем если клик был НЕ по кнопке "удалить задачу"
+	if (event.target.dataset.action !== 'delete') {
+		return;
 	}
 
-	// Проверка. Если в списке задач более 1 элемент, показываем блок "Список пуст"
+	// Проверяем что клик был по кнопке "удалить задачу"
+	const parentNode = event.target.closest('.list-group-item');
+	parentNode.remove();
 
+	// Проверка. Если в списке задач более 1 элемент, показываем блок "Список пуст"
 	if (tasksList.children.length === 1) {
 		emptyList.classList.remove('none');
 	}
+
+	saveHTMLtoLS();
 }
 
 function doneTask(event) {
-	// Проверяем что клик был по кнопке "задача выполнена"
-	if (event.target.dataset.action === 'done') {
-		const parentNode = event.target.closest('.list-group-item');
-		const taskTitle = parentNode.querySelector('.task-title');
-		taskTitle.classList.toggle('task-title--done');
+	// Проверяем что клик был НЕ по кнопке "задача выполнена"
+	if (event.target.dataset.action !== 'done') {
+		return;
 	}
+
+	// Проверяем что клик был по кнопке "задача выполнена"
+	const parentNode = event.target.closest('.list-group-item');
+	const taskTitle = parentNode.querySelector('.task-title');
+	taskTitle.classList.toggle('task-title--done');
+
+	saveHTMLtoLS();
+}
+
+function saveHTMLtoLS() {
+	localStorage.setItem('tasksHTML', tasksList.innerHTML);
 }
