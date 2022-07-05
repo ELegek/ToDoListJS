@@ -53,6 +53,12 @@ function deleteTask(event) {
 	// Проверяем что клик был по кнопке "удалить задачу"
 	if (event.target.dataset.action == 'delete') {
 		const parenNode = event.target.closest('.list-group-item');
-		console.log(parenNode);
+		parenNode.remove();
+	}
+
+	// Проверка. Если в списке задач более 1 элемент, показываем блок "Список пуст"
+
+	if (tasksList.children.length === 1) {
+		emptyList.classList.remove('none');
 	}
 }
