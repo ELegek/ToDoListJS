@@ -102,6 +102,20 @@ function doneTask(event) {
 
 	// Проверяем что клик был по кнопке "задача выполнена"
 	const parentNode = event.target.closest('.list-group-item');
+
+	// Определяем ID задачи
+	const id = Number(parentNode.id);
+
+	const task = tasks.find(function (task) {
+		if (task.id === id) {
+			return true;
+		}
+	});
+
+	task.done = !task.done;
+
+	console.log(task);
+
 	const taskTitle = parentNode.querySelector('.task-title');
 	taskTitle.classList.toggle('task-title--done');
 }
